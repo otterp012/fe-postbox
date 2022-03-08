@@ -1,0 +1,66 @@
+.wrap {
+  padding: 0 20px;
+}
+
+.wrap  h1 {
+  margin: 10px 0;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.town-map {
+  display: flex;
+}
+
+.town-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 70%;
+  height: 70vh;
+  border: 1px solid #000;
+}
+
+.town-container .towns:nth-child(1) {
+  width: 70%;
+  height: 70%;
+  place-self: start end;
+  background-color: rebeccapurple;
+}
+.town-container .towns:nth-child(2) {
+  width: 50%;
+  height: 70%;
+  place-self: center;
+  background-color: red;
+}
+.town-container .towns:nth-child(3) {
+  /* 
+  width height 난수 재생성 필요 
+  place-self 랜던값 필요
+  */
+  place-self: center end;
+  width: 90%;
+  height: 50%;
+  background-color: black;
+}
+.town-container .towns:nth-child(4) {
+  background-color: blue;
+}
+
+.infor-container {
+  width: 30%;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+.infor-container .postbox-check-btn {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  background-color: #f00;
+}
+
+.infor-container .infor {
+  margin-bottom: 20px;
+}
