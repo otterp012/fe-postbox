@@ -5,7 +5,6 @@ class Selectors {
     const queue = [start];
     const visited = {};
     visited[start] = true;
-
     while (queue.length) {
       for (let i = 0; i < queue.length; i++) {
         let parent = queue.shift();
@@ -20,22 +19,23 @@ class Selectors {
     }
   }
 
-  static allClassSelector(str, start = document.body) {
+  static AllclassSelector(str) {
+    const start = document.body;
     const queue = [start];
-    const result = [];
     const visited = {};
+    const result = [];
     visited[start] = true;
 
     while (queue.length) {
       for (let i = 0; i < queue.length; i++) {
         let parent = queue.shift();
-        parent.childNodes.forEach((v, i) => {
-          if (v.className === str) {
-            result.push(v);
+        for (let child of parent.childNodes) {
+          if (String(child.className).indexOf(str) !== -1) result.push(child);
+          else {
+            visited[child] = true;
+            queue.push(child);
           }
-          visited[(parent.childNodes[i] = true)];
-          queue.push(parent.childNodes[i]);
-        });
+        }
       }
     }
     return result;
@@ -51,7 +51,7 @@ class Selectors {
       for (let i = 0; i < queue.length; i++) {
         let parent = queue.shift();
         for (let child of parent.childNodes) {
-          if (child.className == str) return child;
+          if (String(child.className).indexOf(str) !== -1) return child;
           else {
             visited[child] = true;
             queue.push(child);
@@ -85,11 +85,16 @@ class TownGenerator {
   renderBigTown() {
     const bigTownNum = this.getRandomInt(1, this.bigTownCount);
     this.count = bigTownNum;
+
     let html = '';
     for (let i = 1; i <= bigTownNum; i++) {
-      html += this.renderTown(i, 'bigTown');
+      html += this.renderTown(i, 'bigTowns');
     }
+
     Selectors.classSelector('town-container').innerHTML = html;
+    Selectors.AllclassSelector('bigTowns').forEach((bigTown) => {
+      bigTown.style.placeSelf = this.setLocation();
+    });
   }
 
   renderSmallTown() {
@@ -102,6 +107,28 @@ class TownGenerator {
 
   renderTown(id, className = '') {
     return `<div class="towns ${className}" id="${id}">${id}</div>`;
+  }
+
+  setLocation() {
+    const LOCATION_ATTR = [
+      'auto center',
+      'normal start',
+      'center normal',
+      'start auto',
+      'end normal',
+      'self-start auto',
+      'self-end normal',
+      'flex-start auto',
+      'flex-end normal',
+      'left auto',
+      'right normal',
+      'baseline normal',
+      'first baseline auto',
+      'last baseline normal',
+      'stretch auto',
+    ];
+    const LOCATION_ATTR_LEN = LOCATION_ATTR.length;
+    return LOCATION_ATTR[this.getRandomInt(0, LOCATION_ATTR_LEN)];
   }
 }
 
