@@ -18,20 +18,33 @@
   grid-template-rows: 1fr 1fr;
   width: 70%;
   height: 70vh;
+  padding: 10px;
   border: 1px solid #000;
+}
+
+.town-container .towns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.town-container .towns .towns {
+  margin: 5px;
 }
 
 .town-container .towns:nth-child(1) {
   width: 70%;
   height: 70%;
   place-self: start end;
-  background-color: rebeccapurple;
+  border: 2px solid rebeccapurple;
 }
 .town-container .towns:nth-child(2) {
   width: 50%;
   height: 70%;
   place-self: center;
-  background-color: red;
+  border: 2px solid red;
 }
 .town-container .towns:nth-child(3) {
   /* 
@@ -41,10 +54,10 @@
   place-self: center end;
   width: 90%;
   height: 50%;
-  background-color: black;
+  border: 2px solid black;
 }
 .town-container .towns:nth-child(4) {
-  background-color: blue;
+  border: 2px solid blue;
 }
 
 .infor-container {
