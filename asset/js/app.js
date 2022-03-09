@@ -67,13 +67,14 @@ class TownGenerator {
     this.maxTownCount = maxTownCount;
     this.bigTownCount = bigTownCount;
     this.count = null;
-
+    this.set = null;
     this.init();
   }
 
   init() {
     this.renderBigTown();
     this.renderSmallTown();
+    this.renderPost(4);
   }
 
   getRandomInt(min, max) {
@@ -105,10 +106,6 @@ class TownGenerator {
     }
   }
 
-  renderTown(id, className = '') {
-    return `<div class="towns ${className}" id="${id}">${id}</div>`;
-  }
-
   getLocation() {
     const LOCATION_ATTR = [
       'auto center',
@@ -129,6 +126,27 @@ class TownGenerator {
     ];
     const LOCATION_ATTR_LEN = LOCATION_ATTR.length;
     return LOCATION_ATTR[this.getRandomInt(0, LOCATION_ATTR_LEN)];
+  }
+
+  getPostCount(number) {
+    const set = new Set();
+    for (let i = 0; i < number; i++) {
+      const randomId = this.getRandomInt(1, this.maxTownCount);
+      const postSize = i;
+      set.add([randomId, postSize]);
+    }
+    return set;
+  }
+
+  renderTown(id, className = '') {
+    return `<div class="towns ${className}" id="${id}">${id}</div>`;
+  }
+
+  renderPost(number) {
+    this.set = this.getPostCount(number);
+    this.set.forEach((arr) => {
+      Selectors.IDSelector(arr[0]).insertAdjacentText('afterbegin', '📮 ');
+    });
   }
 }
 
