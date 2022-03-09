@@ -14,8 +14,8 @@
 
 .town-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
   grid-gap: 10px;
   width: 70%;
   height: 70vh;
