@@ -93,7 +93,7 @@ class TownGenerator {
 
     Selectors.classSelector('town-container').innerHTML = html;
     Selectors.AllclassSelector('bigTowns').forEach((bigTown) => {
-      bigTown.style.placeSelf = this.setLocation();
+      bigTown.style.placeSelf = this.getLocation();
     });
   }
 
@@ -109,7 +109,7 @@ class TownGenerator {
     return `<div class="towns ${className}" id="${id}">${id}</div>`;
   }
 
-  setLocation() {
+  getLocation() {
     const LOCATION_ATTR = [
       'auto center',
       'normal start',
