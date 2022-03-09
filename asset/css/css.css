@@ -26,7 +26,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  min-width: 30%;
+  min-height: 30%;
   padding: 10px;
+  border: 2px solid #aaa;
   box-sizing: border-box;
 }
 
@@ -34,30 +38,9 @@
   margin: 5px;
 }
 
-.town-container .towns:nth-child(1) {
-  width: 70%;
-  height: 70%;
+.town-container .bigTown {
   place-self: start end;
-  border: 2px solid rebeccapurple;
-}
-.town-container .towns:nth-child(2) {
-  width: 50%;
-  height: 70%;
-  place-self: center;
-  border: 2px solid red;
-}
-.town-container .towns:nth-child(3) {
-  /* 
-  width height 난수 재생성 필요 
-  place-self 랜던값 필요
-  */
-  place-self: center end;
-  width: 90%;
-  height: 50%;
-  border: 2px solid black;
-}
-.town-container .towns:nth-child(4) {
-  border: 2px solid blue;
+  /* place-self 동적으로 바꾸어주어야 하는 부분 */
 }
 
 .infor-container {
