@@ -87,7 +87,7 @@ class TownGenerator {
     this.count = bigTownNum;
     let html = '';
     for (let i = 1; i <= bigTownNum; i++) {
-      html += this.renderTown(i);
+      html += this.renderTown(i, 'bigTown');
     }
     Selectors.classSelector('town-container').innerHTML = html;
   }
@@ -100,8 +100,8 @@ class TownGenerator {
     }
   }
 
-  renderTown(id) {
-    return `<div class="towns" id="${id}">${id}</div>`;
+  renderTown(id, className = '') {
+    return `<div class="towns ${className}" id="${id}">${id}</div>`;
   }
 }
 
