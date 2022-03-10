@@ -201,14 +201,22 @@ class EventListener {
   }
 
   btnClickEventHandler() {
-    Selectors.classSelector('postbox-check-btn').addEventListener(
-      'click',
-      () => {
-        this.refineInfor();
-        this.convertTownBorderColor(2000);
-        this.printText(this.sortedInfor);
+    document.body.addEventListener('click', ({ target }) => {
+      switch (target.className) {
+        case 'postbox-check-btn':
+          this.refineInfor();
+          this.convertTownBorderColor(2000);
+          this.printText(this.sortedInfor);
+          break;
+        case 'reload-btn':
+          this.reload();
+          break;
       }
-    );
+    });
+  }
+
+  reload() {
+    location.reload();
   }
 
   printText(obj) {
