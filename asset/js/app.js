@@ -65,9 +65,10 @@ class Selectors {
 }
 
 class TownGenerator {
-  constructor(maxTownCount, bigTownCount) {
+  constructor(maxTownCount, bigTownCount, postBoxCount) {
     this.maxTownCount = maxTownCount;
     this.bigTownCount = bigTownCount;
+    this.postBoxCount = postBoxCount;
     this.count = null;
     this.set = null;
     this.init();
@@ -76,7 +77,7 @@ class TownGenerator {
   init() {
     this.renderBigTown();
     this.renderSmallTown();
-    this.renderPost(4);
+    this.renderPost(this.postBoxCount);
   }
 
   getRandomInt(min, max) {
@@ -133,8 +134,11 @@ class TownGenerator {
   getPostCount(number) {
     const set = new Set();
     for (let i = 0; i < number; i++) {
-      const randomId = this.getRandomInt(1, this.maxTownCount);
-      const postSize = i;
+      let randomId = this.getRandomInt(1, this.maxTownCount);
+      const postSize = this.getRandomInt(1, this.maxTownCount);
+      set.forEach((arr) => {
+        if (arr[0] === randomId) randomId += 1;
+      });
       set.add([randomId, postSize]);
     }
     return set;
@@ -154,7 +158,8 @@ class TownGenerator {
 }
 
 (function () {
-  const townMaxCount = 10;
+  const townMaxCount = 20;
   const bigTownCount = 4;
-  const town = new TownGenerator(townMaxCount, bigTownCount);
+  const postBoxCount = 4;
+  const town = new TownGenerator(townMaxCount, bigTownCount, postBoxCount);
 })();
