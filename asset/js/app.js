@@ -20,7 +20,7 @@ class Selectors {
     return null;
   }
 
-  static AllclassSelector(str) {
+  static allClassSelector(str) {
     const start = document.body;
     const queue = [start];
     const visited = {};
@@ -96,7 +96,7 @@ class TownGenerator {
     }
 
     Selectors.classSelector('town-container').innerHTML = html;
-    Selectors.AllclassSelector('bigTowns').forEach((bigTown) => {
+    Selectors.allClassSelector('bigTowns').forEach((bigTown) => {
       bigTown.style.placeSelf = this.getLocation();
     });
   }
@@ -157,37 +157,68 @@ class TownGenerator {
   }
 }
 
-class controller {
-  constructor(town, printer) {
+class EventListener {
+  constructor(town) {
     this.town = town;
-    this.printer = printer;
-
-    this.sendInfo();
+    this.sortedInfor = null;
+    this.btnClickEventHandler();
   }
 
-  sendInfo() {
+  refineInfor() {
+    // 수정해야하는 함수
     const postInfo = this.town.set;
-    const arr1 = []; // 마을
-    const arr2 = []; // 사이즈순
+    const townSorted = []; // 마을
+    const postSorted = []; // 사이즈순
 
     postInfo.forEach((townID) => {
-      arr1.push(townID[0]);
+      townSorted.push(townID[0]);
     });
+
+    townSorted.sort((a, b) => a - b);
 
     [...postInfo]
       .sort((a, b) => a[1] - b[1])
       .forEach((postSize) => {
-        arr2.push(postSize[0]);
+        postSorted.push(postSize[0]);
       });
 
-    console.log(arr2.join(', '));
+    this.sortedInfor = {
+      townSorted,
+      postSorted,
+    };
   }
-}
 
-class Printer {
-  constructor() {}
+  convertTownBorderColor(ms) {
+    this.delay(ms).then(() =>
+      this.sortedInfor.townSorted.forEach((townID) => {
+        Selectors.IDSelector(townID).style.borderColor = 'red';
+      })
+    );
+  }
 
-  print() {}
+  delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  btnClickEventHandler() {
+    Selectors.classSelector('postbox-check-btn').addEventListener(
+      'click',
+      () => {
+        this.refineInfor();
+        this.convertTownBorderColor(2000);
+        this.printText(this.sortedInfor);
+      }
+    );
+  }
+
+  printText(obj) {
+    Selectors.classSelector(
+      'infor-text'
+    ).innerHTML = `우체통을 가지고 있는 마을은 ${obj.townSorted}입니다.
+    <br>
+    <br>
+    우체통 크기의 순서는 ${obj.postSorted}입니다.`;
+  }
 }
 
 (function () {
@@ -195,6 +226,5 @@ class Printer {
   const bigTownCount = 4;
   const postBoxCount = 4;
   const town = new TownGenerator(townMaxCount, bigTownCount, postBoxCount);
-  const printer = new Printer();
-  const constroll = new controller(town, printer);
+  const eventListener = new EventListener(town);
 })();
