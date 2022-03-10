@@ -7,8 +7,8 @@ class Selectors {
     visited[start] = true;
     while (queue.length) {
       for (let i = 0; i < queue.length; i++) {
-        let parent = queue.shift();
-        for (let child of parent.childNodes) {
+        const parent = queue.shift();
+        for (const child of parent.childNodes) {
           if (child.id == str) return child;
           else {
             visited[child] = true;
@@ -17,6 +17,7 @@ class Selectors {
         }
       }
     }
+    return null;
   }
 
   static AllclassSelector(str) {
@@ -28,9 +29,9 @@ class Selectors {
 
     while (queue.length) {
       for (let i = 0; i < queue.length; i++) {
-        let parent = queue.shift();
-        for (let child of parent.childNodes) {
-          if (String(child.className).indexOf(str) !== -1) result.push(child);
+        const parent = queue.shift();
+        for (const child of parent.childNodes) {
+          if (String(child.className).includes(str)) result.push(child);
           else {
             visited[child] = true;
             queue.push(child);
@@ -49,9 +50,9 @@ class Selectors {
 
     while (queue.length) {
       for (let i = 0; i < queue.length; i++) {
-        let parent = queue.shift();
-        for (let child of parent.childNodes) {
-          if (String(child.className).indexOf(str) !== -1) return child;
+        const parent = queue.shift();
+        for (const child of parent.childNodes) {
+          if (String(child.className).includes(str)) return child;
           else {
             visited[child] = true;
             queue.push(child);
@@ -59,6 +60,7 @@ class Selectors {
         }
       }
     }
+    return null;
   }
 }
 
@@ -99,7 +101,7 @@ class TownGenerator {
   }
 
   renderSmallTown() {
-    while (this.count <= this.maxTownCount) {
+    while (this.count < this.maxTownCount) {
       let rand = this.getRandomInt(1, this.count);
       this.count++;
       Selectors.IDSelector(rand).innerHTML += this.renderTown(this.count);
@@ -147,6 +149,7 @@ class TownGenerator {
     this.set.forEach((arr) => {
       Selectors.IDSelector(arr[0]).insertAdjacentText('afterbegin', '📮 ');
     });
+    console.log(this.set);
   }
 }
 
