@@ -157,9 +157,44 @@ class TownGenerator {
   }
 }
 
+class controller {
+  constructor(town, printer) {
+    this.town = town;
+    this.printer = printer;
+
+    this.sendInfo();
+  }
+
+  sendInfo() {
+    const postInfo = this.town.set;
+    const arr1 = []; // 마을
+    const arr2 = []; // 사이즈순
+
+    postInfo.forEach((townID) => {
+      arr1.push(townID[0]);
+    });
+
+    [...postInfo]
+      .sort((a, b) => a[1] - b[1])
+      .forEach((postSize) => {
+        arr2.push(postSize[0]);
+      });
+
+    console.log(arr2.join(', '));
+  }
+}
+
+class Printer {
+  constructor() {}
+
+  print() {}
+}
+
 (function () {
   const townMaxCount = 20;
   const bigTownCount = 4;
   const postBoxCount = 4;
   const town = new TownGenerator(townMaxCount, bigTownCount, postBoxCount);
+  const printer = new Printer();
+  const constroll = new controller(town, printer);
 })();
