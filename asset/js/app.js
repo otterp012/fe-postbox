@@ -1,4 +1,4 @@
-class Selectors {
+class Utils {
   constructor() {}
 
   static IDSelector(str, start = document.body) {
@@ -62,6 +62,34 @@ class Selectors {
     }
     return null;
   }
+
+  static mergeSort(arr) {
+    const len = arr.length;
+    if (len == 1) {
+      return arr;
+    }
+    const middle = Math.floor(len / 2);
+    const left = arr.slice(0, middle);
+    const right = arr.slice(middle, len);
+    function merge(left, right) {
+      const result = [];
+      while (left.length && right.length) {
+        if (left[0] <= right[0]) {
+          result.push(left.shift());
+        } else {
+          result.push(right.shift());
+        }
+      }
+      while (left.length) {
+        result.push(left.shift());
+      }
+      while (right.length) {
+        result.push(right.shift());
+      }
+      return result;
+    }
+    return merge(this.mergeSort(left), this.mergeSort(right));
+  }
 }
 
 class TownGenerator {
@@ -95,8 +123,8 @@ class TownGenerator {
       html += this.renderTown(i, 'bigTowns');
     }
 
-    Selectors.classSelector('town-container').innerHTML = html;
-    Selectors.allClassSelector('bigTowns').forEach((bigTown) => {
+    Utils.classSelector('town-container').innerHTML = html;
+    Utils.allClassSelector('bigTowns').forEach((bigTown) => {
       bigTown.style.placeSelf = this.getLocation();
     });
   }
@@ -105,7 +133,7 @@ class TownGenerator {
     while (this.count < this.maxTownCount) {
       let rand = this.getRandomInt(1, this.count);
       this.count++;
-      Selectors.IDSelector(rand).innerHTML += this.renderTown(this.count);
+      Utils.IDSelector(rand).innerHTML += this.renderTown(this.count);
     }
   }
 
@@ -135,9 +163,10 @@ class TownGenerator {
     const set = new Set();
     for (let i = 0; i < number; i++) {
       let randomId = this.getRandomInt(1, this.maxTownCount);
-      const postSize = this.getRandomInt(1, this.maxTownCount);
+      let postSize = this.getRandomInt(1, this.maxTownCount);
       set.forEach((arr) => {
         if (arr[0] === randomId) randomId += 1;
+        if (arr[1] === postSize) postSize += 1;
       });
       set.add([randomId, postSize]);
     }
@@ -151,9 +180,8 @@ class TownGenerator {
   renderPost(number) {
     this.set = this.getPostCount(number);
     this.set.forEach((arr) => {
-      Selectors.IDSelector(arr[0]).insertAdjacentText('afterbegin', '📮 ');
+      Utils.IDSelector(arr[0]).insertAdjacentText('afterbegin', '📮 ');
     });
-    console.log(this.set);
   }
 }
 
@@ -165,22 +193,18 @@ class EventListener {
   }
 
   refineInfor() {
-    // 수정해야하는 함수
     const postInfo = this.town.set;
-    const townSorted = []; // 마을
-    const postSorted = []; // 사이즈순
-
+    let townSorted = [];
     postInfo.forEach((townID) => {
       townSorted.push(townID[0]);
     });
+    townSorted = Utils.mergeSort(townSorted);
 
-    townSorted.sort((a, b) => a - b);
-
-    [...postInfo]
-      .sort((a, b) => a[1] - b[1])
-      .forEach((postSize) => {
-        postSorted.push(postSize[0]);
-      });
+    const temp = {};
+    [...postInfo].forEach((town) => {
+      temp[town[1]] = town[0];
+    });
+    const postSorted = Object.values(temp);
 
     this.sortedInfor = {
       townSorted,
@@ -191,7 +215,7 @@ class EventListener {
   convertTownBorderColor(ms) {
     this.delay(ms).then(() =>
       this.sortedInfor.townSorted.forEach((townID) => {
-        Selectors.IDSelector(townID).style.borderColor = 'red';
+        Utils.IDSelector(townID).style.borderColor = 'red';
       })
     );
   }
@@ -220,7 +244,7 @@ class EventListener {
   }
 
   printText(obj) {
-    Selectors.classSelector(
+    Utils.classSelector(
       'infor-text'
     ).innerHTML = `우체통을 가지고 있는 마을은 ${obj.townSorted}입니다.
     <br>
